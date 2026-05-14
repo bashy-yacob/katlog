@@ -1,0 +1,99 @@
+/* CatalogPage.css */
+
+.catalog-container {
+  padding: 40px 0;
+  direction: rtl;
+}
+
+.catalog-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: #8b5e3c;
+  text-align: center;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+/* קו עיטור קטן מתחת לכותרת */
+.catalog-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  background-color: #d4af37;
+  margin: 15px auto 0;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 20px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden; /* כדי שהתמונה לא תצא מהגבולות המעוגלים */
+  border: 1px solid #f3e5d8;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(139, 94, 60, 0.1);
+  border-color: #d4af37;
+}
+
+.product-image-placeholder {
+  width: 100%;
+  height: 250px;
+  background-color: #fdf8f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #f3e5d8;
+  color: #d4af37;
+  font-style: italic;
+}
+
+.product-info {
+  padding: 20px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: #4a4238;
+  margin-bottom: 10px;
+}
+
+.product-description {
+  font-size: 0.95rem;
+  color: #8c7e6d;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  height: 3em; /* מגביל את התיאור ל-2 שורות לשמירה על אחידות */
+  overflow: hidden;
+}
+
+.product-link {
+  display: inline-block;
+  padding: 10px 25px;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.product-link:hover {
+  background-color: #d4af37;
+  color: white;
+}

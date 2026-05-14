@@ -1,0 +1,125 @@
+/* ContactPage.css */
+
+.contact-container {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 0 20px;
+  direction: rtl;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.contact-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: #8b5e3c;
+  margin-bottom: 10px;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 50px;
+  background: white;
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(139, 94, 60, 0.08);
+  border: 1px solid #f3e5d8;
+}
+
+@media (max-width: 768px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
+
+/* צד המידע */
+.contact-info-side {
+  background-color: #fdf8f3;
+  padding: 30px;
+  border-radius: 15px;
+  color: #4a4238;
+}
+
+.contact-info-side h2 {
+  font-family: 'Playfair Display', serif;
+  color: #8b5e3c;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+.info-item {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info-item strong {
+  color: #d4af37;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+/* צד הטופס */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form h2 {
+  font-family: 'Playfair Display', serif;
+  color: #8b5e3c;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #665f55;
+}
+
+.form-group input, 
+.form-group textarea {
+  padding: 12px 15px;
+  border: 1px solid #e8d5c4;
+  border-radius: 8px;
+  background-color: #fffaf5;
+  font-family: 'Assistant', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.submit-btn {
+  background-color: #8b5e3c;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #724c31;
+}
