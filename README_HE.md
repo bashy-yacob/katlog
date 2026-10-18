@@ -2,6 +2,22 @@
 
 קטלוג דיגיטלי לעסק עוגיות רויאל אייסינג
 
+## 📚 דוקומנטציה (חשוב לקריאה!)
+
+**אם אתה חוזר לפרויקט אחרי הפסקה, קרא אלה בסדר:**
+
+1. **[HOW_TO_RETURN.md](HOW_TO_RETURN.md)** - מדריך להחזרה (15 דק')
+2. **[PROJECT_STATUS.md](PROJECT_STATUS.md)** - סטטוס כללי של הפרויקט
+3. **[DATA_FLOW.md](DATA_FLOW.md)** - דיאגרמות זרימת נתונים (עיקרי!)
+4. **[PAGES_COMPONENTS.md](PAGES_COMPONENTS.md)** - כל עמוד וקומפוננטה
+5. **[ARCHITECTURE_DETAILED.md](ARCHITECTURE_DETAILED.md)** - פרטים טכניים
+6. **[NEXT_STEPS.md](NEXT_STEPS.md)** - מה צריך לעשות הבא
+
+**הערות בקוד**: כל קובץ חשוב יש לו הערות בעברית בתחילה המסבירות:
+- מה עושה הקובץ
+- איך הנתונים זורמים דרכו
+- מאיפה מגיעות קלט ולאן הם הולכים
+
 ## טכנולוגיות
 
 - **React 19** עם TypeScript
@@ -9,7 +25,7 @@
 - **React Router v7** - ניתוב צד קליינט
 - **React Query v5** - ניהול מצב שרתי
 - **Lucide React** - ספריית אייקונים
-- **Firebase** - backend
+- **Firebase** - backend (עדיין לא חובר)
 - **React Hook Form** - form management
 
 ## התחלה מהירה
@@ -38,16 +54,16 @@ npm run build
 
 ```
 src/
-├── api/              # שכבת אינטגרציה API
+├── api/              # שכבת אינטגרציה API (יתווצר בPhase 1)
 ├── components/       # קומפוננטות UI מתכנסות
-├── features/         # מודולי תכונות (קטלוג, leads, admin)
+├── features/         # מודולי תכונות
 ├── hooks/            # React hooks מותאמים
 ├── layouts/          # קומפוננטות layout
 ├── pages/            # עמודים לנתיבים
 ├── routes/           # תצורת נתיבים
-├── services/         # שירותים
+├── services/         # שירותים (React Query)
 ├── types/            # TypeScript types
-└── utils/            # פונקציות עזר
+└── utils/            # פונקציות עזר (storage, helpers)
 ```
 
 ## נתיבים

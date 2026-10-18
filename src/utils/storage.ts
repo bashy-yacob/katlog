@@ -1,3 +1,27 @@
+/**
+ * 💾 Storage Utility - ניהול הנתונים ב-localStorage
+ * 
+ * מטרה: שמירה וטעינה של מוצרים מ-localStorage (זיכרון מקומי)
+ * 
+ * הערה: זה זמני לפי בנייה של הפרויקט
+ *       בעתיד: יחליפו ל-Firebase Firestore
+ * 
+ * פונקציות:
+ *   1. getProducts() → קרא את כל המוצרים מ-localStorage
+ *   2. saveProducts() → שמור רשימה שלמה ב-localStorage
+ *   3. addProduct() → הוסף מוצר חדש לרשימה
+ *   4. updateProduct() → עדכן מוצר קיים
+ *   5. deleteProduct() → מחק מוצר
+ *   6. initializeWithDefaults() → אתחול עם ערכי ברירת מחדל
+ * 
+ * זרימת נתונים:
+ *   useProducts hook → storage.getProducts() → localStorage → Component
+ *   Component → useProducts.addProduct() → storage.addProduct() → localStorage
+ * 
+ * מבנה localStorage:
+ *   Key: 'royal-icing-products'
+ *   Value: JSON array של Product objects
+ */
 import type { Product } from '@/types';
 
 const PRODUCTS_STORAGE_KEY = 'royal-icing-products';

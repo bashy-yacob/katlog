@@ -1,65 +1,39 @@
+import type { FormEvent } from 'react';
 import { useDocumentTitle } from '@/hooks';
+import PageHeading from '@/components/PageHeading';
+import Button from '@/components/Button';
 import './ContactPage.css';
 
 export default function ContactPage() {
   useDocumentTitle('צור קשר - Royal Icing Catalog');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // יטופל בהמשך
-  };
+  // The existing form has no send integration; preserve its submit behavior.
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => event.preventDefault();
 
   return (
-    <div className="contact-container">
-      <div className="contact-header">
-        <h1 className="contact-title">נשמח לשמוע ממך</h1>
-        <p>לכל שאלה, בקשה להזמנה מיוחדת או ייעוץ מתוק</p>
-      </div>
-
+    <div className="contact-page brand-wrap">
+      <PageHeading eyebrow="יצירת קשר · עיצוב אישי" title="בואי נדבר על משהו מתוק."
+        description="רעיון לעוגיות, אירוע שמתקרב או שאלה קטנה — זה המקום להתחיל." />
       <div className="contact-layout">
-        {/* מידע ליצירת קשר */}
-        <div className="contact-info-side">
-          <h2>מידע ליצירת קשר</h2>
-          <div className="info-item">
-            <strong>טלפון</strong>
-            <span>050-1234567</span>
+        <aside className="contact-info">
+          <h2>כל הפרטים הקטנים.</h2>
+          <p className="contact-introduction">לכל שאלה, בקשה להזמנה מיוחדת או ייעוץ מתוק.</p>
+          <dl>
+            <div><dt>טלפון</dt><dd><a href="tel:0501234567" dir="ltr">050-1234567</a></dd></div>
+            <div><dt>אימייל</dt><dd><a href="mailto:info@royalicing.com" dir="ltr">info@royalicing.com</a></dd></div>
+            <div><dt>שעות פעילות</dt><dd>ראשון - חמישי: <bdi>09:00 - 18:00</bdi><br />שישי: <bdi>09:00 - 13:00</bdi></dd></div>
+          </dl>
+        </aside>
+        <form className="contact-form brand-form" onSubmit={handleSubmit} aria-labelledby="contact-form-title">
+          <div className="contact-form-heading"><h2 id="contact-form-title">מה את מדמיינת?</h2><p className="form-note">השדות המסומנים בכוכבית הם שדות חובה.</p></div>
+          <div className="form-grid">
+            <div className="form-group"><label htmlFor="name">שם מלא *</label><input type="text" id="name" name="name" autoComplete="name" placeholder="איך קוראים לך?" required /></div>
+            <div className="form-group"><label htmlFor="phone">טלפון *</label><input type="tel" id="phone" name="phone" autoComplete="tel" dir="ltr" placeholder="מספר ליצירת קשר" required /></div>
+            <div className="form-group form-group-wide"><label htmlFor="email">אימייל *</label><input type="email" id="email" name="email" autoComplete="email" dir="ltr" placeholder="כתובת המייל שלך" required /></div>
+            <div className="form-group form-group-wide"><label htmlFor="message">הודעה *</label><textarea id="message" name="message" rows={5} placeholder="ספרי לנו על האירוע, הצבעים או הרעיון שלך..." required /></div>
           </div>
-          <div className="info-item">
-            <strong>אימייל</strong>
-            <span>info@royalicing.com</span>
-          </div>
-          <div className="info-item">
-            <strong>שעות פעילות</strong>
-            <span>ראשון - חמישי: 09:00 - 18:00</span>
-            <span>שישי: 09:00 - 13:00</span>
-          </div>
-        </div>
-
-        {/* טופס יצירת קשר */}
-        <form className="contact-form" onSubmit={handleSubmit}>
-          <h2>השאר לנו הודעה</h2>
-          
-          <div className="form-group">
-            <label htmlFor="name">שם מלא</label>
-            <input type="text" id="name" name="name" placeholder="איך קוראים לך?" required />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">אימייל</label>
-            <input type="email" id="email" name="email" placeholder="כתובת המייל שלך" required />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="phone">טלפון</label>
-            <input type="tel" id="phone" name="phone" placeholder="מספר ליצירת קשר" required />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="message">הודעה</label>
-            <textarea id="message" name="message" rows={5} placeholder="ספר/י לנו על האירוע שלך..." required></textarea>
-          </div>
-
-          <button type="submit" className="submit-btn">שלח הודעה</button>
+          <p className="ui-notice" id="contact-availability">שליחת הודעות דרך הטופס עדיין אינה זמינה. בינתיים אפשר להשתמש בפרטי הקשר המופיעים בעמוד.</p>
+          <div className="contact-submit"><Button type="submit" className="submit-btn" aria-describedby="contact-availability">שלח הודעה</Button></div>
         </form>
       </div>
     </div>

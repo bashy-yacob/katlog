@@ -1,87 +1,25 @@
-/* AdminLeadsPage.css */
-
-.admin-container {
-  padding: 40px 20px;
-  direction: rtl;
-}
-
-.admin-title {
-  font-family: 'Playfair Display', serif;
-  color: #8b5e3c;
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #f3e5d8;
-  padding-bottom: 15px;
-}
-
-.table-wrapper {
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(139, 94, 60, 0.05);
-  overflow: hidden; /* לשמירה על פינות מעוגלות */
-  border: 1px solid #f3e5d8;
-}
-
-.leads-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: right;
-}
-
-.leads-table th {
-  background-color: #fdf8f3;
-  color: #8b5e3c;
-  padding: 18px 15px;
-  font-weight: 700;
-  border-bottom: 2px solid #f3e5d8;
-}
-
-.leads-table td {
-  padding: 15px;
-  border-bottom: 1px solid #f9f1e9;
-  color: #4a4238;
-  font-size: 0.95rem;
-}
-
-.leads-table tr:hover {
-  background-color: #fffaf5;
-}
-
-/* עיצוב הסטטוסים כ"תגים" */
-.status-badge {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.status-new {
-  background-color: #ffe8cc;
-  color: #d97706;
-}
-
-.status-contacted {
-  background-color: #d1fae5;
-  color: #059669;
-}
-
-.status-closed {
-  background-color: #f3f4f6;
-  color: #6b7280;
-}
-
-/* כפתור פעולה */
-.view-btn {
-  background-color: white;
-  border: 1px solid #d4af37;
-  color: #d4af37;
-  padding: 6px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.view-btn:hover {
-  background-color: #d4af37;
-  color: white;
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.admin-leads-page .leads-table-wrapper { max-width: 100%; border-top: 1px solid var(--line); }
+.admin-leads-page .leads-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px; text-align: start; }
+.admin-leads-page .leads-table th { padding: 16px 12px; background: var(--paper); font-size: 13px; color: var(--taupe); font-weight: 400; text-align: start; border-bottom: 1px solid var(--line); }
+.admin-leads-page .leads-table td { padding: 18px 12px; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+.admin-leads-page .leads-table th:nth-child(2) { width: 24%; }
+.admin-leads-page .leads-table th:nth-child(3) { width: 22%; }
+.admin-leads-page .leads-table th:last-child { width: 108px; }
+.admin-leads-page .leads-table tr:hover td { background: var(--paper); }
+.admin-leads-page .lead-name { font-weight: 700; }
+.admin-leads-page .lead-contact a { display: block; font-size: 13px; }
+.admin-leads-page .lead-contact a + a { margin-top: 8px; color: var(--taupe); }
+.admin-leads-page .lead-contact a:hover { text-decoration: underline; }
+.admin-leads-page .lead-message { color: var(--muted); line-height: 1.8; }
+@media(max-width:1000px) {
+  .admin-leads-page .leads-table, .admin-leads-page .leads-table tbody { display: block; }
+  .admin-leads-page .leads-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .admin-leads-page .leads-table tbody { display: grid; gap: 16px; }
+  .admin-leads-page .leads-table tr { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; padding-block: 20px; border-bottom: 1px solid var(--line); }
+  .admin-leads-page .leads-table td { display: block; padding: 0; border: 0; }
+  .admin-leads-page .leads-table td::before { display: block; content: attr(data-label); margin-bottom: 8px; color: var(--taupe); font-size: 12px; font-weight: 400; }
+  .admin-leads-page .leads-table .lead-name { grid-column: 1 / -1; font-family: var(--serif); font-size: 25px; font-weight: 400; }
+  .admin-leads-page .leads-table .lead-name::before { display: none; }
+  .admin-leads-page .leads-table .lead-message, .admin-leads-page .leads-table .lead-actions { grid-column: 1 / -1; }
 }

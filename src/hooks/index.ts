@@ -1,3 +1,26 @@
+/**
+ * 🎣 Custom Hooks - Utility hooks משומשים בכל הפרויקט
+ * 
+ * 1️⃣ useProducts():
+ *    - ניהול רשימת מוצרים (CRUD)
+ *    - קריאה מ-storage, כתיבה ל-storage
+ *    - משמש ב-CatalogPage, ProductDetailPage, AdminProductsPage
+ * 
+ * 2️⃣ useApi():
+ *    - גישה לReact Query client
+ *    - פונקציות עזר: invalidateQueries, prefetchQuery
+ *    - בעתיד: יורחבו כשנחבור ל-API אמיתי
+ * 
+ * 3️⃣ useDocumentTitle(title):
+ *    - עדכון ה-title של דף HTML
+ *    - משמש בכל Pages להראות כותרת שונה בכל עמוד
+ *    - דוגמה: HomePage → "בית - Royal Icing Catalog"
+ * 
+ * 4️⃣ useAsync<T>(fn, deps):
+ *    - ניהול async operations (fetch וכו')
+ *    - מחזירה: status, data, error
+ *    - בעתיד: עשויה להיות יותר בשימוש כשנחבור ל-API
+ */
 import { ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 export { useProducts } from './useProducts';

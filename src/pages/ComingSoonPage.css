@@ -1,0 +1,7 @@
+.coming-soon-page { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(32px,7vw,96px); padding-block: clamp(48px,7vw,88px); }
+.coming-soon-page .page-heading { margin-bottom: 32px; }
+.coming-soon-page .coming-soon-message { padding: 40px; background: var(--paper); border-top: 1px solid var(--pink); }
+.coming-soon-page .coming-soon-message h2 { font-family: var(--serif); font-size: clamp(30px,3vw,40px); font-weight: 400; line-height: 1.2; margin-bottom: 20px; text-wrap: balance; }
+.coming-soon-page .coming-soon-message > p:last-child { color: var(--muted); line-height: 1.9; }
+@media (max-width:850px) { .coming-soon-page { grid-template-columns: minmax(0,1fr); gap: 36px; } }
+@media (max-width:560px) { .coming-soon-page { padding-block: 36px 44px; } .coming-soon-page .coming-soon-message { padding: 28px 24px; } }

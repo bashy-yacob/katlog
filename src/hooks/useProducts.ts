@@ -1,3 +1,39 @@
+/**
+ * 🎣 Custom Hook: useProducts
+ * 
+ * מטרה: ניהול רשימת המוצרים (קריאה, יצירה, עדכון, מחיקה)
+ * 
+ * זרימת נתונים:
+ *   1️⃣ LOAD (Initial): 
+ *       - useEffect מורץ בטעינה
+ *       - קרא מ-localStorage בעזרת storage.getProducts()
+ *       - שמור ב-state (products, isLoading)
+ * 
+ *   2️⃣ CREATE (הוספה):
+ *       - Component קורא addProduct(data)
+ *       → יצור ID ו-timestamp חדשים
+ *       → שמור ב-localStorage (storage.addProduct)
+ *       → עדכן את ה-state (setProducts)
+ * 
+ *   3️⃣ UPDATE (עדכון):
+ *       - Component קורא updateProduct(id, data)
+ *       → חפש מוצר בID
+ *       → עדכן ב-localStorage (storage.updateProduct)
+ *       → עדכן ב-state (setProducts)
+ * 
+ *   4️⃣ DELETE (מחיקה):
+ *       - Component קורא deleteProduct(id)
+ *       → מחק מ-localStorage (storage.deleteProduct)
+ *       → עדכן ב-state (setProducts)
+ * 
+ * פלט: Object עם:
+ *   - products: מערך המוצרים
+ *   - isLoading: bool בטעינה?
+ *   - addProduct, updateProduct, deleteProduct: פונקציות
+ * 
+ * הערה: כרגע משתמשים ב-localStorage (storage.ts)
+ *       בעתיד: יחליפו ל-Firebase Firestore queries + mutations
+ */
 import { useState, useEffect } from 'react';
 import type { Product } from '@/types';
 import { storage } from '@/utils/storage';

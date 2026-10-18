@@ -1,4 +1,29 @@
-import { useState, useRef } from 'react';
+/**
+ * 📤 ImageUpload - Component להעלאת תמונה
+ * 
+ * מטרה: העלאה של תמונה למוצר (בעלוי או URL)
+ * 
+ * זרימת נתונים:
+ *   1. ProductModal משתמשת בImageUpload
+ *      - מעבירה onImageSelect callback
+ *      - מעבירה currentImage (אם בעריכה)
+ * 
+ *   2. משתמש בוחר דרך:
+ *      - מצב "URL": הכנס קישור לתמונה ישירות
+ *      - מצב "File": בחר קובץ מהמחשב
+ * 
+ *   3. כשמשתמש בוחר תמונה:
+ *      - Preview מוצגת מידית
+ *      - onImageSelect(imageData) נקרא עם הנתונים
+ *      - ProductModal מקבל את הנתונים בstateה
+ * 
+ *   4. כשלוחצים "שמור":
+ *      - הנתונים של התמונה שמורים יחד עם המוצר
+ * 
+ * כרגע: שומרים כURL או base64
+ * בעתיד: יעלו ל-Firebase Storage
+ */
+import { useState, useRef, useEffect } from 'react';
 
 interface ImageUploadProps {
   onImageSelect: (imageData: string) => void;
@@ -10,6 +35,11 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
   const [urlInput, setUrlInput] = useState(currentImage || '');
   const [preview, setPreview] = useState<string>(currentImage || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setPreview(currentImage || '');
+    setUrlInput(currentImage?.startsWith('data:') ? '' : currentImage || '');
+  }, [currentImage]);
 
   const handleModeChange = (mode: 'file' | 'url') => {
     setUploadMode(mode);
@@ -48,6 +78,7 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
         <button
           type="button"
           className={`tab-btn ${uploadMode === 'url' ? 'active' : ''}`}
+          aria-pressed={uploadMode === 'url'}
           onClick={() => handleModeChange('url')}
         >
           קישור URL
@@ -55,6 +86,7 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
         <button
           type="button"
           className={`tab-btn ${uploadMode === 'file' ? 'active' : ''}`}
+          aria-pressed={uploadMode === 'file'}
           onClick={() => handleModeChange('file')}
         >
           העלאה מהמחשב
@@ -63,7 +95,7 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
 
       <div className="upload-content">
         {uploadMode === 'url' ? (
-          <div className="url-input-group">
+          <div key="url" className="url-input-group">
             <label htmlFor="image-url">קישור לתמונה:</label>
             <input
               id="image-url"
@@ -75,7 +107,7 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
             />
           </div>
         ) : (
-          <div className="file-input-group">
+          <div key="file" className="file-input-group">
             <label htmlFor="image-file">בחר תמונה מהמחשב:</label>
             <input
               ref={fileInputRef}
@@ -92,7 +124,7 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
       {preview && (
         <div className="image-preview">
           <p>תצוגה מקדימה:</p>
-          <img src={preview} alt="Preview" />
+          <img src={preview} alt="תצוגה מקדימה של תמונת המוצר" />
         </div>
       )}
     </div>

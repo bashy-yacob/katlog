@@ -1,43 +1,60 @@
-import { useDocumentTitle, useProducts } from '@/hooks';
 import { Link } from 'react-router-dom';
+import { useDocumentTitle, useProducts } from '@/hooks';
+import CatalogProductCard from '@/components/CatalogProductCard';
 import './CatalogPage.css';
 
 export default function CatalogPage() {
-  useDocumentTitle('קטלוג - Royal Icing Catalog');
+  useDocumentTitle('קטלוג עוגיות מעוצבות - Royal Icing');
   const { products, isLoading } = useProducts();
 
   return (
-    <div className="catalog-container">
-      <h1 className="catalog-title">קטלוג עוגיות מעוצבות</h1>
+    <div className="catalog-page brand-wrap">
+      <nav className="catalog-breadcrumb" aria-label="מיקום באתר">
+        <Link to="/">דף הבית</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">גלריית העוגיות</span>
+      </nav>
 
-      {isLoading ? (
-        <p>טוען מוצרים...</p>
-      ) : products.length === 0 ? (
-        <p>אין מוצרים בקטלוג עדיין.</p>
-      ) : (
-        <div className="products-grid">
-          {products.map((product) => (
-            <div key={product.id} className="product-card">
-              {/* הצגת התמונה או placeholder */}
-              <div className="product-image-placeholder">
-                {product.image ? (
-                  <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <span>תמונת מוצר</span>
-                )}
-              </div>
-              
-              <div className="product-info">
-                <h3 className="product-name">{product.name}</h3>
-                <p className="product-description">{product.description}</p>
-                <Link to={`/catalog/${product.id}`} className="product-link">
-                  צפה בפרטים
-                </Link>
-              </div>
-            </div>
-          ))}
+      <header className="catalog-intro">
+        <div>
+          <p className="catalog-eyebrow">רויאל אייסינג · עבודת יד</p>
+          <h1>קטלוג <em>עוגיות מעוצבות</em></h1>
         </div>
-      )}
+        <p className="catalog-intro-copy">
+          יצירות קטנות של טעם וצבע, שנוצרות אחת־אחת עם תשומת לב לכל פרט.
+          לאירוע, למתנה, או לרגע קטן של מתוק.
+        </p>
+      </header>
+
+      <section className="catalog-collection" aria-label="קולקציית העוגיות" aria-busy={isLoading}>
+        {isLoading ? (
+          <div className="catalog-loading" role="status">
+            <p>טוענת את העוגיות...</p>
+            <div className="catalog-grid" aria-hidden="true">
+              <div className="catalog-loading-tile" />
+              <div className="catalog-loading-tile" />
+              <div className="catalog-loading-tile" />
+            </div>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="catalog-empty">
+            <span className="catalog-empty-mark" aria-hidden="true" />
+            <h2>משהו מתוק מתבשל כאן...</h2>
+            <p>בקרוב תמצאי כאן קולקציה של עוגיות מעוצבות בעבודת יד.</p>
+            <Link className="brand-button primary" to="/contact">בינתיים, בואי נדבר</Link>
+          </div>
+        ) : (
+          <>
+            <div className="catalog-collection-heading">
+              <p>הקולקציה</p>
+              <span>{products.length === 1 ? 'עיצוב אחד' : products.length + ' עיצובים'}</span>
+            </div>
+            <div className="catalog-grid">
+              {products.map(product => <CatalogProductCard key={product.id} product={product} />)}
+            </div>
+          </>
+        )}
+      </section>
     </div>
   );
 }

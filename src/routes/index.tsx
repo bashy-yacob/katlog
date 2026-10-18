@@ -1,17 +1,45 @@
+/**
+ * 🗺️ Router Configuration - הגדרת כל הניתובים באפליקציה
+ * 
+ * מטרה: הגדרת מבנה התוכנית של כל הדפים
+ * 
+ * Routing Tree:
+ *   /
+ *   ├── "/" → HomePage (בעמוד הבית)
+ *   ├── "/catalog" → CatalogPage (רשימת מוצרים)
+ *   ├── "/catalog/:id" → ProductDetailPage (פרטי מוצר בודד)
+ *   ├── "/contact" → ContactPage (טופס צור קשר)
+ *   ├── "/admin/leads" → AdminLeadsPage (טבלת הזמנות)
+ *   └── "/admin/products" → AdminProductsPage (ניהול מוצרים)
+ * 
+ * Root Layout (RootLayout):
+ *   - מעטפת את כל העמודים
+ *   - מכילה Navbar (ניווט) ו-Footer
+ *   - ה-<Outlet /> משתנה בין עמודים שונים
+ * 
+ * Error Handling:
+ *   - errorElement: מוצג כשיש שגיאה (404 וכו')
+ * 
+ * זרימה:
+ *   משתמש לוחץ בNavbar → ניתוב משתנה → <Outlet /> מחליף עמוד → תצוגה חדשה
+ */
 import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '@/layouts/RootLayout';
 import HomePage from '@/pages/HomePage';
 import CatalogPage from '@/pages/CatalogPage';
 import ProductDetailPage from '@/pages/ProductDetailPage';
 import ContactPage from '@/pages/ContactPage';
+import ComingSoonPage from '@/pages/ComingSoonPage';
 import AdminLeadsPage from '@/pages/admin/AdminLeadsPage';
 import AdminProductsPage from '@/pages/admin/AdminProductsPage';
+import NotFoundPage from '@/pages/NotFoundPage';
+import RouteErrorPage from '@/pages/RouteErrorPage';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    errorElement: <div className="error-page">404 - Page not found</div>,
+    errorElement: <RouteErrorPage />,
     children: [
       {
         index: true,
@@ -26,6 +54,14 @@ export const router = createBrowserRouter([
         element: <ProductDetailPage />,
       },
       {
+        path: 'courses',
+        element: <ComingSoonPage kind="courses" />,
+      },
+      {
+        path: 'videos',
+        element: <ComingSoonPage kind="videos" />,
+      },
+      {
         path: 'contact',
         element: <ContactPage />,
       },
@@ -36,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: 'admin/products',
         element: <AdminProductsPage />,
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
   },

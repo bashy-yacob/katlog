@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local PowerShell cache
+/Microsoft/Windows/PowerShell/ModuleAnalysisCache

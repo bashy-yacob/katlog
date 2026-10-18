@@ -1,107 +1,62 @@
 import { useState } from 'react';
 import { useDocumentTitle } from '@/hooks';
-import { Lead } from '@/types';
+import type { Lead } from '@/types';
 import LeadModal from '@/components/LeadModal';
+import LeadStatus from '@/components/LeadStatus';
+import PageHeading from '@/components/PageHeading';
+import PageState from '@/components/PageState';
+import Button from '@/components/Button';
 import './AdminLeadsPage.css';
 
 export default function AdminLeadsPage() {
   useDocumentTitle('ניהול הזמנות - Royal Icing Catalog');
-
+  // Preserve the existing in-memory lead source; backend integration is separate.
   const [leads, setLeads] = useState<Lead[]>([
-    {
-      id: '1',
-      name: 'אבי כהן',
-      email: 'avi@example.com',
-      phone: '050-1234567',
-      message: 'מעוניין בהזמנה לאירוע ברחוב הרצל 123',
-      status: 'new',
-      createdAt: new Date(),
-    },
-    {
-      id: '2',
-      name: 'דן לוי',
-      email: 'dan@example.com',
-      phone: '052-9876543',
-      message: 'שאלות לגבי האפשרות להוסיף עיצובים מותאמים',
-      status: 'contacted',
-      createdAt: new Date(),
-    },
+    { id: '1', name: 'אבי כהן', email: 'avi@example.com', phone: '050-1234567',
+      message: 'מעוניין בהזמנה לאירוע ברחוב הרצל 123', status: 'new', createdAt: new Date() },
+    { id: '2', name: 'דן לוי', email: 'dan@example.com', phone: '052-9876543',
+      message: 'שאלות לגבי האפשרות להוסיף עיצובים מותאמים', status: 'contacted', createdAt: new Date() },
   ]);
-
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [feedback, setFeedback] = useState('');
 
-  // פונקציית עזר לתרגום ועיצוב סטטוס
-  const renderStatus = (status: Lead['status']) => {
-    const statusMap = {
-      new: { text: 'חדש', class: 'status-new' },
-      contacted: { text: 'נוצר קשר', class: 'status-contacted' },
-      closed: { text: 'סגור', class: 'status-closed' },
-    };
-    const current = statusMap[status] || statusMap.new;
-    return <span className={`status-badge ${current.class}`}>{current.text}</span>;
-  };
-
-  const handleViewLead = (lead: Lead) => {
-    setSelectedLead(lead);
-    setIsModalOpen(true);
-  };
-
+  const handleViewLead = (lead: Lead) => { setSelectedLead(lead); setIsModalOpen(true); };
   const handleStatusChange = (leadId: string, newStatus: Lead['status']) => {
-    setLeads((prevLeads) =>
-      prevLeads.map((lead) =>
-        lead.id === leadId ? { ...lead, status: newStatus } : lead,
-      ),
-    );
-    if (selectedLead?.id === leadId) {
-      setSelectedLead({ ...selectedLead, status: newStatus });
-    }
+    setLeads(previous => previous.map(lead => lead.id === leadId ? { ...lead, status: newStatus } : lead));
+    if (selectedLead?.id === leadId) setSelectedLead({ ...selectedLead, status: newStatus });
+    setFeedback('סטטוס הפנייה עודכן בתצוגה.');
   };
 
   return (
-    <div className="admin-container">
-      <h1 className="admin-title">ניהול הזמנות ופניות</h1>
-
-      <div className="table-wrapper">
-        <table className="leads-table">
-          <thead>
-            <tr>
-              <th>שם הלקוח</th>
-              <th>פרטי קשר</th>
-              <th>הודעה</th>
-              <th>סטטוס</th>
-              <th>תאריך פנייה</th>
-              <th>פעולות</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leads.map((lead) => (
+    <div className="admin-leads-page">
+      <PageHeading eyebrow="הזמנות ופניות · סביבת ניהול" title="ניהול הזמנות ופניות"
+        description="כל הפרטים והשיחות, עם תמונה ברורה של מה חדש ומה כבר טופל." />
+      <dl className="admin-summary">
+        <div><dt>סך הפניות</dt><dd>{leads.length}</dd></div>
+        <div><dt>חדשות</dt><dd>{leads.filter(lead => lead.status === 'new').length}</dd></div>
+        <div><dt>הושלמו</dt><dd>{leads.filter(lead => lead.status === 'completed').length}</dd></div>
+      </dl>
+      <p className="ui-feedback" role="status">{feedback}</p>
+      {leads.length === 0 ? <PageState title="כל הפניות יופיעו כאן." description="כשיהיו פניות להצגה, תוכלי לעיין בפרטים ולעדכן את הסטטוס שלהן." /> : (
+        <div className="leads-table-wrapper">
+          <table className="leads-table">
+            <caption className="visually-hidden">רשימת פניות וסטטוס הטיפול</caption>
+            <thead><tr><th scope="col">שם הלקוח</th><th scope="col">פרטי קשר</th><th scope="col">הודעה</th><th scope="col">סטטוס</th><th scope="col">תאריך פנייה</th><th scope="col">פעולות</th></tr></thead>
+            <tbody>{leads.map(lead => (
               <tr key={lead.id}>
-                <td style={{ fontWeight: 'bold' }}>{lead.name}</td>
-                <td>
-                  <div style={{ fontSize: '0.85rem' }}>{lead.email}</div>
-                  <div style={{ fontSize: '0.85rem', color: '#8b5e3c' }}>{lead.phone}</div>
-                </td>
-                <td title={lead.message}>{lead.message.substring(0, 40)}...</td>
-                <td>{renderStatus(lead.status)}</td>
-                <td>{lead.createdAt.toLocaleDateString('he-IL')}</td>
-                <td>
-                  <button className="view-btn" onClick={() => handleViewLead(lead)}>
-                    פרטים
-                  </button>
-                </td>
+                <td data-label="שם הלקוח" className="lead-name">{lead.name}</td>
+                <td data-label="פרטי קשר" className="lead-contact"><a href={'mailto:' + lead.email}><bdi>{lead.email}</bdi></a><a href={'tel:' + lead.phone}><bdi>{lead.phone}</bdi></a></td>
+                <td data-label="הודעה" className="lead-message" title={lead.message}>{lead.message.length > 40 ? lead.message.substring(0,40) + '…' : lead.message}</td>
+                <td data-label="סטטוס"><LeadStatus status={lead.status} /></td>
+                <td data-label="תאריך פנייה"><bdi>{lead.createdAt.toLocaleDateString('he-IL')}</bdi></td>
+                <td data-label="פעולות" className="lead-actions"><Button tone="quiet" className="view-btn button-compact" onClick={() => handleViewLead(lead)} aria-label={'פרטי הפנייה של ' + lead.name}>פרטים</Button></td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <LeadModal
-        lead={selectedLead}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onStatusChange={handleStatusChange}
-      />
+            ))}</tbody>
+          </table>
+        </div>
+      )}
+      <LeadModal lead={selectedLead} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onStatusChange={handleStatusChange} />
     </div>
   );
 }

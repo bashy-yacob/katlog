@@ -1,6 +1,6 @@
 # 📊 Royal Icing Catalog - סטטוס פרויקט
 
-**תאריך עדכון אחרון:** 13 במאי 2026  
+**תאריך עדכון אחרון:** 17 במאי 2026  
 **סטטוס כללי:** 🟢 שלד בסיסי הושלם + lucide-react מותקן - מוכן להרחבה
 
 ---
@@ -87,6 +87,24 @@
 - ✅ `ARCHITECTURE.md` - ארכיטקטורה מפורטת
 - ✅ `README_HE.md` - הנחיות בעברית
 - ✅ `README.md` - הנחיות באנגלית (קיים)
+- ✅ `PROJECT_STATUS.md` - סטטוס זה (עדכון: 17 במאי 2026)
+- ✅ **[חדש!]** `HOW_TO_RETURN.md` - מדריך להחזרה לפרויקט
+- ✅ **[חדש!]** `DATA_FLOW.md` - דיאגרמות זרימת נתונים
+- ✅ **[חדש!]** `PAGES_COMPONENTS.md` - רשימה מלאה של כל דף וקומפוננטה
+- ✅ **[חדש!]** `ARCHITECTURE_DETAILED.md` - פרטים טכניים והדגומים למימוש
+- ✅ **[חדש!]** `NEXT_STEPS.md` - TODO list מפורט ו-Phase-wise planning
+
+### 13. הערות בקוד
+- ✅ **[חדש!]** הערות בעברית בתחילת כל קובץ:
+  - `src/pages/*` - כל 6 העמודים
+  - `src/components/*` - כל הקומפוננטות החשובות
+  - `src/hooks/*` - כל ה-hooks
+  - `src/layouts/*` - RootLayout
+  - `src/services/*` - queryClient, index
+  - `src/utils/*` - storage, types, hooks index
+  - `src/routes/*` - router configuration
+  - `src/App.tsx` - entry point
+
 
 ---
 
