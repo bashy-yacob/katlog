@@ -25,7 +25,7 @@
   background: var(--cream);
   color: var(--brown);
   font-family: var(--sans);
-  font-size: 17px;
+  font-size: var(--text-body);
   line-height: 1.7;
   direction: rtl;
   text-align: start;
@@ -100,7 +100,7 @@
 .brand-surface .brand-footer li { margin-bottom: 6px; }
 .brand-surface .brand-footer a { opacity: .88; text-decoration: none; }
 .brand-surface .brand-footer a:hover { opacity: 1; }
-.brand-surface .brand-copyright { padding-top: 24px; font-size: 13px; opacity: .8; }
+.brand-surface .brand-copyright { padding-top: 24px; font-size: var(--text-small); opacity: .8; }
 .brand-layout { display: flex; flex-direction: column; min-height: 100vh; }
 .brand-layout > .brand-main { flex: 1; width: 100%; min-width: 0; }
 
@@ -123,6 +123,7 @@
 .brand-surface {
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --text-small: 14px; --text-body: 17px;
   --radius-control: 6px; --radius-panel: 8px; --radius-pill: 999px;
   --shadow-dialog: 0 24px 56px rgba(73, 63, 56, .2);
   --overlay: rgba(73, 63, 56, .48);
@@ -134,10 +135,10 @@
 .brand-surface .brand-button.quiet:hover { background: var(--paper); }
 .brand-surface .brand-button.danger { background: var(--pink-soft); color: var(--danger); }
 .brand-surface .brand-button.danger:hover { background: var(--pink); }
-.brand-surface .brand-button.button-compact { padding: 8px 16px; min-width: 0; font-size: 14px; min-height: 40px; }
+.brand-surface .brand-button.button-compact { padding: 8px 16px; min-width: 0; font-size: 14px; min-height: 44px; }
 .brand-surface .brand-button:disabled, .brand-surface .brand-button[aria-disabled=true] { opacity: .55; cursor: not-allowed; transform: none; }
 .brand-surface :is(button, input, textarea, select):focus-visible { outline: 2px solid var(--taupe); outline-offset: 3px; }
-.brand-surface .ui-eyebrow { margin-bottom: var(--space-4); color: var(--taupe); font-size: 13px; letter-spacing: .09em; }
+.brand-surface .ui-eyebrow { margin-bottom: var(--space-4); color: var(--taupe); font-size: var(--text-small); letter-spacing: .04em; }
 .brand-surface .page-heading { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: var(--space-5); margin-bottom: var(--space-6); }
 .brand-surface .page-heading h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 4.5vw, 60px); line-height: 1.12; letter-spacing: -.02em; text-wrap: balance; }
 .brand-surface .page-heading-description { max-width: 540px; color: var(--muted); margin-top: var(--space-4); font-size: 17px; line-height: 1.8; text-wrap: pretty; }
@@ -148,11 +149,11 @@
 .brand-surface .form-group label { color: var(--brown); font-size: 14px; font-weight: 700; }
 .brand-surface :is(input:not([type=file]), textarea, select) { width: 100%; min-width: 0; border: 1px solid var(--line); border-radius: var(--radius-control); padding: 12px 14px; background: var(--paper); color: var(--brown); font-family: var(--sans); font-size: 16px; line-height: 1.5; transition: border-color var(--transition-fast), background var(--transition-fast); }
 .brand-surface textarea { resize: vertical; min-height: 120px; }
-.brand-surface input::placeholder, .brand-surface textarea::placeholder { color: var(--muted); opacity: .75; }
+.brand-surface input::placeholder, .brand-surface textarea::placeholder { color: var(--muted); opacity: 1; }
 .brand-surface :is(input, textarea, select):focus { border-color: var(--taupe); }
 .brand-surface :is(input, textarea, select):disabled { opacity: .6; cursor: not-allowed; }
 .brand-surface :is(input, textarea):user-invalid { border-color: var(--danger); }
-.brand-surface .form-note { color: var(--muted); font-size: 13px; line-height: 1.8; }
+.brand-surface .form-note { color: var(--muted); font-size: var(--text-small); line-height: 1.8; }
 .brand-surface .ui-notice { padding: 14px 18px; background: var(--paper); border-inline-start: 2px solid var(--pink); color: var(--muted); font-size: 14px; line-height: 1.8; }
 .brand-surface .form-error { padding: 12px 16px; background: var(--pink-soft); color: var(--danger); border-radius: var(--radius-control); font-size: 14px; }
 .brand-surface .ui-feedback { min-height: 24px; color: var(--taupe); font-size: 14px; margin-block: 12px; }
@@ -182,25 +183,27 @@
 .brand-surface .file-input { display: block; width: 100%; max-width: 100%; font-size: 14px; }
 .brand-surface .file-input::file-selector-button { padding: 10px 14px; margin-inline-end: 12px; border: 1px solid var(--line); background: var(--cream); border-radius: var(--radius-control); font: inherit; color: var(--brown); cursor: pointer; }
 .brand-surface .image-preview { margin-top: 18px; }
-.brand-surface .image-preview p { margin-bottom: 10px; font-size: 13px; color: var(--muted); }
+.brand-surface .image-preview p { margin-bottom: 10px; font-size: var(--text-small); color: var(--muted); }
 .brand-surface .image-preview img { width: 100%; max-height: 220px; object-fit: contain; background: var(--cream); }
 .brand-surface .lead-detail { display: grid; grid-template-columns: 110px minmax(0,1fr); gap: 16px; padding-block: 14px; border-bottom: 1px solid var(--line); }
 .brand-surface .lead-detail strong { font-size: 14px; font-weight: 400; color: var(--taupe); }
 .brand-surface .lead-detail p { overflow-wrap: anywhere; white-space: pre-wrap; }
 .brand-surface .status-buttons { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
 .brand-surface .status-btn { flex: 1; padding: 10px 16px; border-radius: var(--radius-pill); background: transparent; border: 1px solid var(--line); font-size: 14px; }
+.brand-surface .status-btn:not(.active):hover { background: var(--pink-soft); border-color: var(--pink); }
 .brand-surface .status-btn.active { background: var(--brown); color: var(--paper); border-color: var(--brown); }
-.brand-surface .status-badge { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; white-space: nowrap; }
-.brand-surface .status-new { background: var(--pink-soft); color: var(--brown); border-color: transparent; }
-.brand-surface .status-contacted { background: var(--cream); color: var(--brown); }
-.brand-surface .status-completed { background: var(--paper); color: var(--muted); }
+.brand-surface .status-badge { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: var(--text-small); white-space: nowrap; }
+.brand-surface .status-new { background: var(--brown); color: var(--paper); border-color: var(--brown); font-weight: 700; }
+.brand-surface .status-contacted { background: var(--pink-soft); color: var(--brown); border-color: var(--pink); }
+.brand-surface .status-completed { background: transparent; color: var(--muted); border-color: var(--taupe); }
 .brand-surface .admin-shell { flex: 1; display: grid; grid-template-columns: 170px minmax(0,1fr); gap: 48px; padding-block: 36px 64px; }
 .brand-surface .admin-rail { border-inline-end: 1px solid var(--line); padding-inline-end: 24px; }
 .brand-surface .admin-rail .ui-eyebrow { margin-bottom: 20px; }
 .brand-surface .admin-nav { display: grid; gap: 8px; }
 .brand-surface .admin-nav a { display: block; padding: 10px 12px; font-size: 15px; border-inline-start: 2px solid transparent; }
-.brand-surface .admin-nav a[aria-current=page] { background: var(--pink-soft); border-color: var(--taupe); }
-.brand-surface .admin-public-link { display: inline-block; margin-top: 24px; color: var(--taupe); font-size: 13px; }
+.brand-surface .admin-nav a:hover { background: var(--paper); }
+.brand-surface .admin-nav a[aria-current=page] { background: var(--pink-soft); border-color: var(--brown); font-weight: 700; }
+.brand-surface .admin-public-link { display: inline-block; margin-top: 24px; color: var(--taupe); font-size: var(--text-small); }
 .brand-surface .admin-main { min-width: 0; }
 .brand-surface .admin-main .page-heading h1 { font-size: clamp(30px, 3.2vw, 44px); }
 .brand-surface .admin-main .page-heading-description { font-size: 15px; margin-top: 12px; }

@@ -1,7 +1,49 @@
-.coming-soon-page { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(32px,7vw,96px); padding-block: clamp(48px,7vw,88px); }
-.coming-soon-page .page-heading { margin-bottom: 32px; }
-.coming-soon-page .coming-soon-message { padding: 40px; background: var(--paper); border-top: 1px solid var(--pink); }
-.coming-soon-page .coming-soon-message h2 { font-family: var(--serif); font-size: clamp(30px,3vw,40px); font-weight: 400; line-height: 1.2; margin-bottom: 20px; text-wrap: balance; }
-.coming-soon-page .coming-soon-message > p:last-child { color: var(--muted); line-height: 1.9; }
-@media (max-width:850px) { .coming-soon-page { grid-template-columns: minmax(0,1fr); gap: 36px; } }
-@media (max-width:560px) { .coming-soon-page { padding-block: 36px 44px; } .coming-soon-page .coming-soon-message { padding: 28px 24px; } }
+/* The same brand type and palette, with a separate composition for each launch. */
+.coming-soon-page { padding-block: clamp(36px, 4.5vw, 64px) 64px; }
+.coming-soon-page .launch-topline { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 32px; }
+.coming-soon-page .launch-topline .ui-eyebrow { margin: 0; letter-spacing: .04em; }
+.coming-soon-page .launch-status { flex-shrink: 0; padding: 5px 20px; border: 1px solid var(--pink); border-radius: var(--radius-pill); font-size: var(--text-small); color: var(--brown); }
+.coming-soon-page :is(h1, .launch-statement) { font-family: var(--serif); font-weight: 400; letter-spacing: -.025em; text-wrap: balance; }
+.coming-soon-page h1 { font-size: clamp(64px, 8vw, 112px); line-height: 1.05; }
+.coming-soon-page .launch-statement { font-size: clamp(44px, 5.2vw, 72px); line-height: 1.12; }
+.coming-soon-page .launch-statement em { color: var(--taupe); font-weight: 400; }
+.coming-soon-page .launch-detail { min-width: 0; }
+.coming-soon-page .launch-detail-copy > p { color: var(--muted); max-width: 520px; line-height: 1.85; text-wrap: pretty; }
+.coming-soon-page .launch-detail-copy .launch-lead { color: var(--brown); font-size: 20px; margin-bottom: 12px; line-height: 1.6; }
+.coming-soon-page .ui-actions { gap: 20px 24px; }
+.launch-courses .launch-heading { display: grid; grid-template-columns: .85fr 1.15fr; align-items: start; gap: 32px 6vw; }
+.launch-courses .launch-statement { padding-top: 20px; }
+.launch-courses .launch-statement em { display: block; }
+.launch-courses .launch-detail { width: calc((100% - 6vw) / 2 * 1.15); margin-inline-start: auto; margin-top: 28px; }
+.launch-courses .ui-actions { margin-top: 28px; }
+.launch-videos .launch-heading { max-width: 900px; }
+.launch-videos h1 { font-size: clamp(60px, 6.5vw, 88px); }
+.launch-videos .launch-statement { margin-top: 20px; margin-inline-start: 7%; font-size: clamp(40px, 4.5vw, 62px); }
+.launch-videos .launch-detail { display: grid; grid-template-columns: 1.25fr 1fr; align-items: end; gap: 28px 6vw; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+.launch-videos .ui-actions { justify-content: flex-end; }
+@media (max-width: 850px) {
+  .coming-soon-page { padding-block: 36px 48px; }
+  .coming-soon-page .launch-topline { margin-bottom: 28px; }
+  .launch-courses .launch-heading { grid-template-columns: .8fr 1.2fr; gap: 24px; }
+  .launch-courses .launch-detail { width: 66%; margin-top: 24px; }
+  .launch-videos .launch-detail { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .launch-videos .ui-actions { justify-content: flex-start; }
+}
+@media (max-width: 560px) {
+  .coming-soon-page { padding-block: 28px 44px; }
+  .coming-soon-page .launch-topline { align-items: baseline; gap: 16px; }
+  .coming-soon-page .launch-topline .ui-eyebrow { max-width: 185px; line-height: 1.6; }
+  .coming-soon-page .launch-status { padding: 4px 14px; }
+  .coming-soon-page h1 { font-size: clamp(56px, 17vw, 76px); }
+  .coming-soon-page .launch-statement { font-size: clamp(38px, 11vw, 48px); }
+  .coming-soon-page .launch-detail-copy .launch-lead { font-size: 18px; }
+  .coming-soon-page .launch-detail-copy > p { font-size: 16px; }
+  .coming-soon-page .ui-actions { gap: 20px; }
+  .launch-courses .launch-heading { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .launch-courses .launch-statement { padding: 0; margin-inline-start: 12%; }
+  .launch-courses .launch-detail { width: 100%; margin-top: 24px; }
+  .launch-courses .ui-actions { margin-top: 24px; }
+  .launch-videos .launch-statement { margin-inline-start: 0; margin-top: 18px; }
+  .launch-videos .launch-statement em { display: block; }
+  .launch-videos .launch-detail { margin-top: 28px; padding-top: 24px; }
+}
