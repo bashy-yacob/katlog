@@ -5,6 +5,7 @@ html:has(.home-page){scroll-behavior:smooth}
 .home-page .wrap{max-width:var(--w);margin:auto;padding:0 5vw}
 .home-page section{padding:clamp(64px,8vw,112px) 0}
 .home-page .eyebrow{font-size:14px;letter-spacing:.04em;color:var(--taupe);margin:0 0 18px}
+.home-page .custom .eyebrow{color:var(--brown)}
 .home-page h1,.home-page h2,.home-page h3{font-family:var(--serif);font-weight:400;margin:0}
 .home-page h2{font-size:clamp(38px,4.2vw,56px);line-height:1.12;letter-spacing:-.02em;text-wrap:balance}
 .home-page h2 em,.home-page h1 em{font-style:italic;color:var(--taupe)}

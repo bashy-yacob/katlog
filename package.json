@@ -10,6 +10,9 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc -p tsconfig.node.json && npm --prefix functions run typecheck",
     "test": "vitest run",
+    "test:build": "npm run build && node scripts/check-client-build.mjs",
+    "check:deployed": "node scripts/check-deployed.mjs",
+    "test:browser": "npm --prefix functions run build && firebase emulators:exec --project demo-royal-icing --only auth,firestore,storage,functions \"playwright test\"",
     "test:server": "npm --prefix functions run build && npm --prefix functions test",
     "test:security": "npm --prefix functions run build && firebase emulators:exec --project demo-royal-icing --only auth,firestore,storage,functions \"node --test --test-force-exit tests/security/*.test.mjs\"",
     "emulators": "npm --prefix functions run build && firebase emulators:start --project demo-royal-icing --only auth,firestore,storage,functions"
@@ -24,8 +27,10 @@
     "react-router-dom": "^7.15.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
     "@firebase/rules-unit-testing": "^5.0.2",
+    "@playwright/test": "^1.64.1",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^26.6.5",
     "@types/react": "^19.2.14",

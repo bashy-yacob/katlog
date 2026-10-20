@@ -32,3 +32,6 @@ dist-ssr
 functions/lib/
 functions/node_modules/
 functions/.secret.local
+test-results/
+playwright-report/
+artifacts/

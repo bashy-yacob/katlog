@@ -21,8 +21,8 @@ vi.mock('firebase/auth', () => ({
 }));
 
 function PrivatePage() {
-  const { logout } = useAdminAuth();
-  return <><h1>תוכן ניהול פרטי</h1><button onClick={() => void logout()}>התנתקות</button></>;
+  const { logout, refresh } = useAdminAuth();
+  return <><h1>תוכן ניהול פרטי</h1><button onClick={() => void logout()}>התנתקות</button><button onClick={() => void refresh()}>אימות הרשאה</button></>;
 }
 function mount(path = '/admin/products') {
   return render(<AdminAuthProvider><MemoryRouter initialEntries={[path]}><Routes>
@@ -30,6 +30,7 @@ function mount(path = '/admin/products') {
     <Route path="/admin" element={<RequireAdmin />}>
       <Route path="products" element={<PrivatePage />} />
       <Route path="leads" element={<PrivatePage />} />
+      <Route path="orders" element={<PrivatePage />} />
     </Route>
   </Routes></MemoryRouter></AdminAuthProvider>);
 }
@@ -46,7 +47,7 @@ beforeEach(() => {
 afterEach(() => { cleanup(); queryClient.clear(); });
 
 describe('admin route authorization', () => {
-  it.each(['/admin/products', '/admin/leads'])('redirects a signed-out direct visit to %s', async path => {
+  it.each(['/admin/products', '/admin/leads', '/admin/orders'])('redirects a signed-out direct visit to %s', async path => {
     mount(path); await identity(null);
     expect(screen.getByRole('heading', { name: 'כניסת מנהלת' })).toBeTruthy();
     expect(screen.queryByText('תוכן ניהול פרטי')).toBeNull();
@@ -54,6 +55,15 @@ describe('admin route authorization', () => {
   it('does not render protected content during authorization', () => {
     mount(); expect(screen.getByRole('status').textContent).toContain('בודקת');
     expect(screen.queryByText('תוכן ניהול פרטי')).toBeNull();
+  });
+  it('initial guest authorization preserves public catalog reads while removing private queries', async () => {
+    queryClient.setQueryData(['products', 'public'], ['public catalog']);
+    queryClient.setQueryData(['admin', 'orders'], ['private']);
+    queryClient.setQueryData(['products', 'admin'], ['hidden products']);
+    mount(); await identity(null);
+    expect(queryClient.getQueryData(['products', 'public'])).toEqual(['public catalog']);
+    expect(queryClient.getQueryData(['admin', 'orders'])).toBeUndefined();
+    expect(queryClient.getQueryData(['products', 'admin'])).toBeUndefined();
   });
   it('allows only the boolean admin claim', async () => {
     mount(); await identity({ admin: 'true' });
@@ -72,6 +82,15 @@ describe('admin route authorization', () => {
     mount(); await identity({ admin: true }); await identity({});
     expect(screen.queryByText('תוכן ניהול פרטי')).toBeNull();
     expect(screen.getByRole('alert').textContent).toContain('מורשית');
+  });
+  it.each(['forbidden', 'network'])('clears private cache when explicit verification fails: %s', async reason => {
+    mount(); await identity({ admin: true });
+    queryClient.setQueryData(['admin', 'orders'], ['private']);
+    if (reason === 'forbidden') mocks.token.mockResolvedValue({ claims: {} });
+    else mocks.token.mockRejectedValue({ code: 'auth/network-request-failed' });
+    fireEvent.click(screen.getByRole('button', { name: 'אימות הרשאה' }));
+    await waitFor(() => expect(screen.queryByText('תוכן ניהול פרטי')).toBeNull());
+    expect(queryClient.getQueryData(['admin', 'orders'])).toBeUndefined();
   });
   it('fails closed on expired tokens', async () => {
     mount(); await identity({ admin: true });

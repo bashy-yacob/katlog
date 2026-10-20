@@ -19,7 +19,14 @@ export default function AdminAuthProvider({ children }: { children: ReactNode })
     const unsubscribe = onIdTokenChanged(firebaseAuth, async user => {
       const current = ++revision.current;
       const sameAdmin = Boolean(user && user.uid === authorizedUid.current);
-      if (!sameAdmin) { setStatus('loading'); queryClient.clear(); }
+      if (!sameAdmin) {
+        setStatus('loading');
+        if (user || authorizedUid.current) queryClient.clear();
+        else {
+          // Initial guest authorization must not cancel public catalog reads.
+          queryClient.removeQueries({ predicate: query => query.queryKey[0] === 'admin' || (query.queryKey[0] === 'products' && query.queryKey[1] === 'admin') });
+        }
+      }
       setError('');
       if (!user) { authorizedUid.current = null; setStatus('signed-out'); return; }
       try {
@@ -70,9 +77,14 @@ export default function AdminAuthProvider({ children }: { children: ReactNode })
     setStatus('loading'); setError('');
     try {
       const token = await getIdTokenResult(user, true);
-      if (current === revision.current && auth.currentUser === user) setStatus(token.claims.admin === true ? 'admin' : 'forbidden');
+      if (current === revision.current && auth.currentUser === user) {
+        const isAdmin = token.claims.admin === true;
+        authorizedUid.current = isAdmin ? user.uid : null;
+        if (!isAdmin) queryClient.clear();
+        setStatus(isAdmin ? 'admin' : 'forbidden');
+      }
     } catch (cause) {
-      if (current === revision.current) { setError(authErrorMessage(cause)); setStatus('error'); }
+      if (current === revision.current) { authorizedUid.current = null; queryClient.clear(); setError(authErrorMessage(cause)); setStatus('error'); }
     }
   };
   return <AdminAuthContext.Provider value={{ status, error, login, logout, refresh }}>{children}</AdminAuthContext.Provider>;

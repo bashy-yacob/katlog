@@ -6,7 +6,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  globalIgnores(['dist', '**/node_modules/**', 'functions/lib/**', 'Microsoft', '.firebase']),
+  globalIgnores(['dist', '**/node_modules/**', 'functions/lib/**', 'Microsoft', '.firebase', 'test-results/**', 'playwright-report/**']),
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
@@ -19,6 +19,7 @@ export default defineConfig([
     },
   },
   { files: ['tests/**/*.mjs', 'functions/test/**/*.mjs'], languageOptions: { globals: globals.node } },
+  { files: ['scripts/**/*.mjs'], languageOptions: { globals: globals.node } },
   {
     files: ['**/*.{js,jsx}'],
     extends: [
