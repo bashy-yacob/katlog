@@ -42,6 +42,8 @@ export const storage = app ? getStorage(app) : null
 export const functions = app ? getFunctions(app, import.meta.env.VITE_ORDER_FUNCTION_REGION || 'europe-west1') : null;
 const appCheckSiteKey = import.meta.env.VITE_FIREBASE_APPCHECK_SITE_KEY;
 export const isOrderServiceReady = Boolean(app && (useEmulators || (appCheckSiteKey && !appCheckSiteKey.startsWith('YOUR_'))));
+// Both public callable endpoints require the same App Check configuration.
+export const isLeadServiceReady = isOrderServiceReady;
 if (app && !existingApp && !useEmulators && appCheckSiteKey && !appCheckSiteKey.startsWith('YOUR_')) {
   initializeAppCheck(app, { provider: new ReCaptchaV3Provider(appCheckSiteKey), isTokenAutoRefreshEnabled: true });
 }

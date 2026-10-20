@@ -14,7 +14,8 @@ export interface OrderRequestInput {
 export interface OrderReceipt { orderNumber: string }
 export type OrderFieldErrors = Partial<Record<keyof OrderRequestInput, string>>;
 export class OrderValidationError extends Error {
-  constructor(public fields: OrderFieldErrors) { super('בדקי את השדות המסומנים בטופס.'); }
+  public fields: OrderFieldErrors;
+  constructor(fields: OrderFieldErrors) { super('בדקי את השדות המסומנים בטופס.'); this.fields = fields; }
 }
 export function pickupToday(now = new Date()): string {
   const parts = new Intl.DateTimeFormat('en', { timeZone: 'Asia/Jerusalem', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);

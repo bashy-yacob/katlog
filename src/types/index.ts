@@ -54,6 +54,8 @@ export interface Lead {
   productId?: string;
   status: 'new' | 'contacted' | 'completed';
   createdAt: Date;
+  updatedAt?: Date;
+  leadNumber?: string;
 }
 
 // API Response types

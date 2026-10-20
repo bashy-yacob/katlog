@@ -21,6 +21,7 @@
 .contact-page .ui-notice { display: grid; gap: 4px; margin-top: 20px; padding: 14px 16px; background: var(--pink-soft); border: 0; border-radius: var(--radius-control); }
 .contact-page .ui-notice strong { color: var(--brown); font-weight: 700; }
 .contact-page .contact-submit { margin-top: 20px; }
+.contact-page .contact-fields { border: 0; padding: 0; margin: 0; min-width: 0; }
 @media (max-width: 850px) {
   .contact-page { padding-block: 36px 48px; }
   .contact-page .contact-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "form" "info"; gap: 32px; }
