@@ -24,17 +24,22 @@
  * בעתיד: יעלו ל-Firebase Storage
  */
 import { useState, useRef, useEffect } from 'react';
+import { IMAGE_TYPES, validateImageFile, validImageUrl } from '@/api/catalog/validation';
 
 interface ImageUploadProps {
   onImageSelect: (imageData: string) => void;
   currentImage?: string;
+  onBusyChange?: (busy: boolean) => void;
 }
 
-export default function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
+export default function ImageUpload({ onImageSelect, currentImage, onBusyChange }: ImageUploadProps) {
   const [uploadMode, setUploadMode] = useState<'file' | 'url'>('url');
   const [urlInput, setUrlInput] = useState(currentImage || '');
   const [preview, setPreview] = useState<string>(currentImage || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState('');
+  const readerRef = useRef<FileReader | null>(null);
+  useEffect(() => () => { readerRef.current?.abort(); }, []);
 
   useEffect(() => {
     setPreview(currentImage || '');
@@ -52,13 +57,20 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      try { validateImageFile(file); } catch (cause) { setError(cause instanceof Error ? cause.message : 'קובץ לא תקין'); e.target.value = ''; return; }
+      readerRef.current?.abort();
       const reader = new FileReader();
+      readerRef.current = reader;
+      onBusyChange?.(true); setError('');
       reader.onload = (event) => {
         const imageData = event.target?.result as string;
         setPreview(imageData);
         setUrlInput(''); // Clear URL input when file is selected
         onImageSelect(imageData);
+        onBusyChange?.(false);
       };
+      reader.onerror = () => { setError('לא ניתן לקרוא את התמונה. נסי לבחור אותה שוב.'); onBusyChange?.(false); };
+      reader.onabort = () => onBusyChange?.(false);
       reader.readAsDataURL(file);
     }
   };
@@ -66,10 +78,11 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value;
     setUrlInput(url);
-    if (url) {
+    if (validImageUrl(url)) {
+      setError('');
       setPreview(url);
       onImageSelect(url);
-    }
+    } else { setError('הקישור צריך להתחיל ב־HTTPS.'); onImageSelect(url); }
   };
 
   return (
@@ -113,13 +126,16 @@ export default function ImageUpload({ onImageSelect, currentImage }: ImageUpload
               ref={fileInputRef}
               id="image-file"
               type="file"
-              accept="image/*"
+              accept={IMAGE_TYPES.join(',')}
               onChange={handleFileChange}
               className="file-input"
             />
           </div>
         )}
       </div>
+
+      <p className="form-note">JPEG, PNG, WebP או GIF, עד 5MB. התמונה תועלה בעת שמירת המוצר, ללא שינוי בעיצוב או באיכות.</p>
+      {error && <p className="form-error" role="alert">{error}</p>}
 
       {preview && (
         <div className="image-preview">

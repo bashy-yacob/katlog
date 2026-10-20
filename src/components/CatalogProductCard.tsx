@@ -10,7 +10,7 @@ const currency = new Intl.NumberFormat('he-IL', {
 export default function CatalogProductCard({ product }: { product: Product }) {
   return (
     <article className="catalog-product">
-      <Link className="catalog-product-link" to={`/catalog/${product.id}`}>
+      <Link className="catalog-product-link" to={`/catalog/${encodeURIComponent(product.id)}`}>
         <div className="catalog-product-image">
           <ProductImage src={product.image} alt={product.name} />
         </div>
@@ -18,7 +18,7 @@ export default function CatalogProductCard({ product }: { product: Product }) {
           <h2>{product.name}</h2>
           {product.description && <p className="catalog-product-description">{product.description}</p>}
           <div className="catalog-product-bottom">
-            <span className="catalog-product-price"><bdi>{currency.format(product.price)}</bdi></span>
+            <span className="catalog-product-price">החל מ־<bdi>{currency.format(product.price)}</bdi></span>
             <span className="brand-text-link">לפרטים ולהזמנה <span aria-hidden="true">←</span></span>
           </div>
         </div>

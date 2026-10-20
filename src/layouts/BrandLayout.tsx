@@ -3,10 +3,12 @@ import { useEffect } from 'react';
 import BrandHeader from '@/components/BrandHeader';
 import BrandFooter from '@/components/BrandFooter';
 import AdminNav from '@/components/AdminNav';
+import { useAdminAuth } from '@/auth/auth-context';
 
 export default function BrandLayout() {
   const { pathname } = useLocation();
-  const isAdmin = pathname.startsWith('/admin/');
+  const { status } = useAdminAuth();
+  const isAdmin = pathname.startsWith('/admin') && status === 'admin';
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);

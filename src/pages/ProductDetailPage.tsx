@@ -1,5 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
-import { useDocumentTitle, useProducts } from '@/hooks';
+import { useDocumentTitle } from '@/hooks';
+import { useProduct } from '@/hooks/useProducts';
+import { catalogError } from '@/api/catalog/validation';
 import ImageLightbox from '@/components/ImageLightbox';
 import PageState from '@/components/PageState';
 import Button from '@/components/Button';
@@ -10,14 +12,15 @@ import './ProductDetailPage.css';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { products, isLoading } = useProducts();
+  const { product, isLoading, error, retry } = useProduct(id);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [failedImage, setFailedImage] = useState<string | null>(null);
-  const product = products.find(item => item.id === id);
-  useDocumentTitle(product ? product.name + ' - Royal Icing Catalog' : 'פרטי מוצר - Royal Icing Catalog');
+  useDocumentTitle(product && product.isActive !== false && !error ? product.name + ' - Royal Icing Catalog' : 'פרטי מוצר - Royal Icing Catalog');
 
   if (isLoading) return <div className="system-page brand-wrap"><p role="status">טוענת את פרטי העוגיות...</p></div>;
-  if (!product) return (
+  const denied = error && typeof error === 'object' && 'code' in error && error.code === 'permission-denied';
+  if (error && !denied) return <div className="system-page brand-wrap"><p className="form-error" role="alert">{catalogError(error)}</p><Button onClick={() => void retry()}>ניסיון נוסף</Button></div>;
+  if (!product || product.isActive === false || denied) return (
     <div className="system-page brand-wrap">
       <PageState headingLevel={1} title="המוצר לא נמצא" description="העיצוב שחיפשת אינו זמין כרגע בקטלוג. אפשר לחזור לגלריה ולגלות את העיצובים הקיימים."
         action={<Link className="brand-button primary" to="/catalog">חזרה לקטלוג</Link>} />
@@ -40,7 +43,8 @@ export default function ProductDetailPage() {
         <div className="product-content-side">
           <p className="ui-eyebrow">רויאל אייסינג · עבודת יד</p>
           <h1 className="product-title-detail">{product.name}</h1>
-          <p className="product-price-tag"><bdi>{formatPrice(product.price)}</bdi></p>
+          <p className="product-price-tag">החל מ־<bdi>{formatPrice(product.price)}</bdi></p>
+          <p className="form-note">מחיר התחלתי בלבד. המחיר הסופי ייקבע לאחר בדיקת בקשת ההזמנה.</p>
           <p className="product-desc-text">{product.description}</p>
           {product.category && <dl className="product-extra-details"><dt>קטגוריה</dt><dd>{productCategoryLabel(product.category)}</dd></dl>}
           <div className="product-order-actions">

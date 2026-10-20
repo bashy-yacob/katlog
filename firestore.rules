@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.get('admin', false) == true;
+    }
+    function validProduct() {
+      let p = request.resource.data;
+      return p.keys().hasAll(['name', 'description', 'price', 'isActive', 'createdAt', 'updatedAt'])
+        && p.keys().hasOnly(['name', 'description', 'price', 'image', 'category', 'isActive', 'createdAt', 'updatedAt'])
+        && p.name is string && p.name.size() > 0 && p.name.size() <= 200
+        && p.description is string && p.description.size() <= 5000
+        && p.price is number && p.price >= 0 && p.price <= 1000000
+        && p.isActive is bool && p.createdAt is timestamp && p.updatedAt == request.time
+        && (!('image' in p) || (p.image is string && p.image.size() <= 2048))
+        && (!('category' in p) || (p.category is string && p.category.size() <= 100));
+    }
+    match /products/{productId} {
+      allow get: if isAdmin() || resource == null || resource.data.get('isActive', false) == true;
+      allow list: if isAdmin() || resource.data.get('isActive', false) == true;
+      allow create: if isAdmin() && validProduct() && request.resource.data.createdAt <= request.time;
+      allow update: if isAdmin() && validProduct() && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isAdmin();
+    }
+    match /orders/{orderId} {
+      allow read: if isAdmin();
+      // Requests will be created only by the validated server endpoint in stage 3.
+      allow create, delete: if false;
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'quotedPrice', 'internalNotes', 'updatedAt'])
+        && request.resource.data.status in ['new', 'pending_confirmation', 'confirmed', 'in_progress', 'ready', 'completed', 'cancelled']
+        && (request.resource.data.quotedPrice == null || (request.resource.data.quotedPrice is number && request.resource.data.quotedPrice >= 0 && request.resource.data.quotedPrice <= 1000000))
+        && request.resource.data.internalNotes is string && request.resource.data.internalNotes.size() <= 5000
+        && request.resource.data.updatedAt == request.time;
+    }
+    match /leads/{leadId} {
+      allow read: if isAdmin();
+      allow create, delete: if false;
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+        && request.resource.data.status in ['new', 'contacted', 'completed']
+        && request.resource.data.updatedAt == request.time;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

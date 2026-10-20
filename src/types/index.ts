@@ -35,7 +35,11 @@ export interface Product {
   image?: string;
   category?: string;
   createdAt?: Date;
+  updatedAt?: Date;
+  isActive?: boolean;
 }
+
+export type ProductInput = Pick<Product, 'name' | 'description' | 'price' | 'image' | 'category'> & { isActive: boolean };
 
 // Contact/Leads types
 export interface Lead {

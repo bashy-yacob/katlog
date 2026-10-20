@@ -34,6 +34,8 @@ import AdminLeadsPage from '@/pages/admin/AdminLeadsPage';
 import AdminProductsPage from '@/pages/admin/AdminProductsPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import RouteErrorPage from '@/pages/RouteErrorPage';
+import RequireAdmin from '@/auth/RequireAdmin';
+import AdminLoginPage from '@/pages/admin/AdminLoginPage';
 
 export const router = createBrowserRouter([
   {
@@ -66,12 +68,18 @@ export const router = createBrowserRouter([
         element: <ContactPage />,
       },
       {
-        path: 'admin/leads',
-        element: <AdminLeadsPage />,
+        path: 'admin/login',
+        element: <AdminLoginPage />,
       },
       {
-        path: 'admin/products',
-        element: <AdminProductsPage />,
+        path: 'admin',
+        element: <RequireAdmin />,
+        children: [
+          { index: true, element: <AdminProductsPage /> },
+          { path: 'leads', element: <AdminLeadsPage /> },
+          { path: 'products', element: <AdminProductsPage /> },
+          { path: '*', element: <NotFoundPage /> },
+        ],
       },
       {
         path: '*',

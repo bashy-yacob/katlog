@@ -21,7 +21,6 @@
  *    - מחזירה: status, data, error
  *    - בעתיד: עשויה להיות יותר בשימוש כשנחבור ל-API
  */
-import { ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 export { useProducts } from './useProducts';
 
@@ -36,9 +35,6 @@ export function useApi() {
     queryClient,
     invalidateQueries: (queryKey: string[]) => {
       queryClient.invalidateQueries({ queryKey });
-    },
-    prefetchQuery: async (queryKey: string[]) => {
-      // This will be implemented when we have actual queries
     },
   };
 }

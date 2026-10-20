@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useDocumentTitle, useProducts } from '@/hooks';
 import CatalogProductCard from '@/components/CatalogProductCard';
+import Button from '@/components/Button';
+import { catalogError } from '@/api/catalog/validation';
 import './CatalogPage.css';
 
 export default function CatalogPage() {
   useDocumentTitle('קטלוג עוגיות מעוצבות - Royal Icing');
-  const { products, isLoading } = useProducts();
+  const { products, isLoading, error, retry } = useProducts();
 
   return (
     <div className="catalog-page brand-wrap">
@@ -23,11 +25,12 @@ export default function CatalogPage() {
         <p className="catalog-intro-copy">
           יצירות קטנות של טעם וצבע, שנוצרות אחת־אחת עם תשומת לב לכל פרט.
           לאירוע, למתנה, או לרגע קטן של מתוק.
+          המחירים הם התחלתיים בלבד; המחיר הסופי ייקבע לאחר בדיקת הבקשה.
         </p>
       </header>
 
       <section className="catalog-collection" aria-label="קולקציית העוגיות" aria-busy={isLoading}>
-        {isLoading ? (
+        {error ? <div><p className="form-error" role="alert">{catalogError(error)}</p><Button onClick={() => void retry()}>ניסיון נוסף</Button></div> : isLoading ? (
           <div className="catalog-loading" role="status">
             <p>טוענת את העוגיות...</p>
             <div className="catalog-grid" aria-hidden="true">

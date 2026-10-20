@@ -25,3 +25,7 @@ dist-ssr
 
 # Local PowerShell cache
 /Microsoft/Windows/PowerShell/ModuleAnalysisCache
+
+# Firebase emulator state is local and may contain test data.
+.firebase/
+*.tsbuildinfo
