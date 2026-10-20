@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const from: unknown = location.state?.from;
-  const destination = typeof from === 'string' && /^\/admin\/(products|leads)\/?$/.test(from) ? from : '/admin/products';
+  const destination = typeof from === 'string' && /^\/admin\/(products|leads|orders)\/?$/.test(from) ? from : '/admin/products';
   if (status === 'admin') return <Navigate to={destination} replace />;
   const submit = async (event: FormEvent) => {
     event.preventDefault();

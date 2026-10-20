@@ -36,6 +36,8 @@ import NotFoundPage from '@/pages/NotFoundPage';
 import RouteErrorPage from '@/pages/RouteErrorPage';
 import RequireAdmin from '@/auth/RequireAdmin';
 import AdminLoginPage from '@/pages/admin/AdminLoginPage';
+import OrderRequestPage from '@/pages/OrderRequestPage';
+import AdminOrdersPage from '@/pages/admin/AdminOrdersPage';
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +57,7 @@ export const router = createBrowserRouter([
         path: 'catalog/:id',
         element: <ProductDetailPage />,
       },
+      { path: 'catalog/:id/order', element: <OrderRequestPage /> },
       {
         path: 'courses',
         element: <ComingSoonPage kind="courses" />,
@@ -77,6 +80,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <AdminProductsPage /> },
           { path: 'leads', element: <AdminLeadsPage /> },
+          { path: 'orders', element: <AdminOrdersPage /> },
           { path: 'products', element: <AdminProductsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],

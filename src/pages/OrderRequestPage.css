@@ -1,0 +1,9 @@
+.order-request-page { padding-block: 36px 64px; }
+.order-request-page .page-heading { margin-top: 28px; }
+.order-request-form, .order-receipt { max-width: 720px; margin-inline: auto; }
+.order-request-form > * + *, .order-receipt > * + * { margin-top: 20px; }
+.order-fields { border: 0; padding: 0; min-width: 0; }
+.order-field-error { color: var(--danger); }
+.order-request-form fieldset:disabled { opacity: .75; }
+.order-receipt { padding-block: 24px; }
+@media (max-width: 560px) { .order-request-page { padding-block: 24px 44px; } }

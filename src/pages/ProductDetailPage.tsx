@@ -48,10 +48,10 @@ export default function ProductDetailPage() {
           <p className="product-desc-text">{product.description}</p>
           {product.category && <dl className="product-extra-details"><dt>קטגוריה</dt><dd>{productCategoryLabel(product.category)}</dd></dl>}
           <div className="product-order-actions">
-            <Button className="order-now-btn" aria-describedby="order-availability">הזמנה אישית בווטסאפ</Button>
+            <Link className="brand-button primary order-now-btn" to={'/catalog/' + encodeURIComponent(product.id) + '/order'} aria-describedby="order-availability">בקשת הזמנה</Link>
             <Link className="brand-text-link" to="/contact">לשאלות וליצירת קשר</Link>
           </div>
-          <p className="form-note" id="order-availability">הזמנה ישירה בווטסאפ עדיין אינה זמינה באתר.</p>
+          <p className="form-note" id="order-availability">איסוף עצמי בלבד. שליחת בקשה אינה אישור סופי של ההזמנה.</p>
         </div>
       </div>
       <ImageLightbox isOpen={isLightboxOpen} imageSrc={product.image || ''} imageAlt={product.name} onClose={() => setIsLightboxOpen(false)} />

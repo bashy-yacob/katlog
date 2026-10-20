@@ -9,7 +9,8 @@ export default function AdminNav() {
       <p className="ui-eyebrow">הסטודיו שלך</p>
       <nav aria-label="ניווט ניהול" className="admin-nav">
         <NavLink to="/admin/products">ניהול מוצרים</NavLink>
-        <NavLink to="/admin/leads">הזמנות ופניות</NavLink>
+        <NavLink to="/admin/orders">ניהול הזמנות</NavLink>
+        <NavLink to="/admin/leads">פניות</NavLink>
       </nav>
       <Button tone="quiet" onClick={() => void logout()}>התנתקות</Button>
       <Link className="admin-public-link" to="/catalog">לצפייה בגלריה <span aria-hidden="true">←</span></Link>

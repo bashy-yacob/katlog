@@ -41,6 +41,9 @@ export interface Product {
 
 export type ProductInput = Pick<Product, 'name' | 'description' | 'price' | 'image' | 'category'> & { isActive: boolean };
 
+// Shared business types; this module never imports server SDKs.
+export type { Order, OrderDocument, OrderStatus, OrderProductSnapshot, OrderManagementInput, OrderManagementPatch, PriceConfirmation } from '../../functions/src/order-model';
+
 // Contact/Leads types
 export interface Lead {
   id: string;

@@ -90,3 +90,32 @@ test('public and ordinary users cannot upload; admin uploads are bounded and imm
   await assertFails(uploadBytes(ref(admin, 'products/huge.png'), new Uint8Array(5 * 1024 * 1024 + 1), options));
   await assertFails(uploadBytes(ref(admin, 'private/file.png'), bytes, options));
 });
+
+test('price agreement is admin-only, timestamped and independent of status or quote updates', async () => {
+  const db = dbFor('admin');
+  const order = doc(db, 'orders/private');
+  await assertSucceeds(updateDoc(order, { status: 'confirmed', updatedAt: serverTimestamp() }));
+  let saved = (await getDoc(order)).data();
+  if (saved.confirmedPrice != null) throw new Error('Status must not confirm a price');
+  const confirmation = { confirmedPrice: 110, priceConfirmedAt: serverTimestamp(), priceConfirmedBy: 'admin', updatedAt: serverTimestamp() };
+  for (const role of ['guest', 'ordinary']) {
+    await assertFails(updateDoc(doc(dbFor(role), 'orders/private'), confirmation));
+  }
+  await assertFails(updateDoc(order, { confirmedPrice: 110, updatedAt: serverTimestamp() }));
+  await assertFails(updateDoc(order, { ...confirmation, priceConfirmedBy: 'another-uid' }));
+  await assertFails(updateDoc(order, { ...confirmation, priceConfirmedAt: new Date('2020-01-01T00:00:00Z') }));
+  await assertFails(updateDoc(order, { ...confirmation, confirmedPrice: -1 }));
+  await assertSucceeds(updateDoc(order, confirmation));
+  saved = (await getDoc(order)).data();
+  if (saved.confirmedPrice !== 110 || saved.priceConfirmedBy !== 'admin') throw new Error('Price confirmation was not recorded');
+  const confirmedAt = saved.priceConfirmedAt.toMillis();
+  await assertSucceeds(updateDoc(order, { quotedPrice: 150, internalNotes: 'New proposal only', updatedAt: serverTimestamp() }));
+  saved = (await getDoc(order)).data();
+  if (saved.quotedPrice !== 150 || saved.confirmedPrice !== 110 || saved.priceConfirmedAt.toMillis() !== confirmedAt) throw new Error('A new proposal must preserve the existing agreement');
+  await assertFails(updateDoc(order, { confirmedPrice: 120, updatedAt: serverTimestamp() }));
+  await assertSucceeds(updateDoc(order, { ...confirmation, confirmedPrice: 0 }));
+  await assertSucceeds(updateDoc(order, { confirmedPrice: null, priceConfirmedAt: null, priceConfirmedBy: null, updatedAt: serverTimestamp() }));
+  for (const patch of [{ createdAt: serverTimestamp() }, { customerPhone: 'changed' }, { productSnapshot: { name: 'changed' } }, { currency: 'USD' }, { fulfillmentMethod: 'shipping' }]) {
+    await assertFails(updateDoc(order, { ...patch, updatedAt: serverTimestamp() }));
+  }
+});

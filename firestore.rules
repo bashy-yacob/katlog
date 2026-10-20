@@ -15,6 +15,25 @@ service cloud.firestore {
         && (!('image' in p) || (p.image is string && p.image.size() <= 2048))
         && (!('category' in p) || (p.category is string && p.category.size() <= 100));
     }
+    function validOrderPrice(value) {
+      return value == null || (value is number && value >= 0 && value <= 1000000);
+    }
+    function validPriceConfirmation() {
+      let next = request.resource.data;
+      let price = next.get('confirmedPrice', null);
+      let at = next.get('priceConfirmedAt', null);
+      let by = next.get('priceConfirmedBy', null);
+      let unchanged = price == resource.data.get('confirmedPrice', null)
+        && at == resource.data.get('priceConfirmedAt', null)
+        && by == resource.data.get('priceConfirmedBy', null);
+      let cleared = price == null && at == null && by == null;
+      let confirmed = price != null && validOrderPrice(price) && at is timestamp
+        && by is string && by.size() > 0 && by.size() <= 128;
+      return (cleared || confirmed) && (unchanged || (
+        next.keys().hasAll(['confirmedPrice', 'priceConfirmedAt', 'priceConfirmedBy'])
+        && (cleared || (at == request.time && by == request.auth.uid))
+      ));
+    }
     match /products/{productId} {
       allow get: if isAdmin() || resource == null || resource.data.get('isActive', false) == true;
       allow list: if isAdmin() || resource.data.get('isActive', false) == true;
@@ -27,9 +46,10 @@ service cloud.firestore {
       // Requests will be created only by the validated server endpoint in stage 3.
       allow create, delete: if false;
       allow update: if isAdmin()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'quotedPrice', 'internalNotes', 'updatedAt'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'quotedPrice', 'internalNotes', 'updatedAt', 'confirmedPrice', 'priceConfirmedAt', 'priceConfirmedBy'])
         && request.resource.data.status in ['new', 'pending_confirmation', 'confirmed', 'in_progress', 'ready', 'completed', 'cancelled']
-        && (request.resource.data.quotedPrice == null || (request.resource.data.quotedPrice is number && request.resource.data.quotedPrice >= 0 && request.resource.data.quotedPrice <= 1000000))
+        && validOrderPrice(request.resource.data.quotedPrice)
+        && validPriceConfirmation()
         && request.resource.data.internalNotes is string && request.resource.data.internalNotes.size() <= 5000
         && request.resource.data.updatedAt == request.time;
     }

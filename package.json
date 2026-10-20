@@ -8,10 +8,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.json && tsc -p tsconfig.node.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc -p tsconfig.node.json && npm --prefix functions run typecheck",
     "test": "vitest run",
-    "test:security": "firebase emulators:exec --project demo-royal-icing --only auth,firestore,storage \"node --test --test-force-exit tests/security/*.test.mjs\"",
-    "emulators": "firebase emulators:start --project demo-royal-icing --only auth,firestore,storage"
+    "test:server": "npm --prefix functions run build && npm --prefix functions test",
+    "test:security": "npm --prefix functions run build && firebase emulators:exec --project demo-royal-icing --only auth,firestore,storage,functions \"node --test --test-force-exit tests/security/*.test.mjs\"",
+    "emulators": "npm --prefix functions run build && firebase emulators:start --project demo-royal-icing --only auth,firestore,storage,functions"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.9",

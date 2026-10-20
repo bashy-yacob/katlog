@@ -29,3 +29,6 @@ dist-ssr
 # Firebase emulator state is local and may contain test data.
 .firebase/
 *.tsbuildinfo
+functions/lib/
+functions/node_modules/
+functions/.secret.local

@@ -6,7 +6,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'Microsoft', '.firebase']),
+  globalIgnores(['dist', '**/node_modules/**', 'functions/lib/**', 'Microsoft', '.firebase']),
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
@@ -18,7 +18,7 @@ export default defineConfig([
       'react-refresh/only-export-components': ['error', { allowConstantExport: true }],
     },
   },
-  { files: ['tests/**/*.mjs'], languageOptions: { globals: globals.node } },
+  { files: ['tests/**/*.mjs', 'functions/test/**/*.mjs'], languageOptions: { globals: globals.node } },
   {
     files: ['**/*.{js,jsx}'],
     extends: [
